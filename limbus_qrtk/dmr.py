@@ -83,5 +83,14 @@ class DataMatrixReader:
 
         return limbus_json
 
-    def to_pdf(self, fp):
+    def to_img(self, fp: str) -> None:
         plt.plot()
+        plt.imshow(self.img)
+
+        for result, values in self.grid.items():
+            d = self.to_limbus_json()["data"][result]
+
+            result_txt = "%s\n[%i, %i]" % (result, d["row"], d["column"])
+            plt.text(values["x"], values["y"], result_txt, bbox=dict(facecolor="white"))
+
+        plt.savefig(fp)
