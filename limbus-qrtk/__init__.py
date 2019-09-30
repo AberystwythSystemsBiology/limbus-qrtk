@@ -1,42 +1,70 @@
 from pylibdmtx.pylibdmtx import decode
-from PIL import Image
 import numpy as np
+import cv2
+import datetime
+import matplotlib.pyplot as plt
+
+class DatamatrixReader:
+    def __init__(self, fp: str, delta: int = 200):
+        self.fp = fp
+        self.delta = delta
+
+        self._load_and_process()
+
+        self._decode_results = decode(self.img)
+
+        self.grid = self._get_grid()
+
+    def _load_and_process(self) -> np.array:
+        img = cv2.imread(self.fp)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = cv2.threshold(img, 155, 255, cv2.THRESH_BINARY_INV)[1]
+
+        self.img = img
 
 
-image = Image.open("datamatrix_example.jpeg").convert('L')
+    def _get_grid(self) -> dict:
+
+        def __gridify(coord, delta):
+            return np.round(coord / delta) * delta
 
 
-results = decode(np.array(image))
+        results_dict = {}
+
+        for result in self._decode_results:
+            results_dict[result.data.decode("utf-8")] = {
+                "x": result.rect.left,
+                "y": result.rect.top,
+                "x_grid": __gridify(result.rect.left, self.delta),
+                "y_grid": __gridify(result.rect.top, self.delta)
+            }
+
+        return results_dict
 
 
-def determine_grid(results: list) -> dict:
+    def to_limbus_json(self) -> dict:
 
-    def _gridify(coords, spacing):
-        return np.round(coords / spacing) * spacing
+        x_labels = {x_g : count for count, x_g in enumerate(sorted(set([x["x_grid"] for x in self.grid.values()])))}
+        y_labels = {y_g : count for count, y_g in enumerate(sorted(set([x["y_grid"] for x in self.grid.values()])))}
 
-    left_all = [abs(result.rect.left) for result in results]
-    top_all = [abs(result.rect.top) for result in results]
+        limbus_json = {
+            "date" : str(datetime.datetime.now()),
+            "number_rows" : len(y_labels),
+            "number_columns": len(x_labels),
+            "number_items" : len(self.grid),
+            "data" : {
 
-    av_width = np.mean([abs(result.rect.width) for result in results])
+            }
+        }
 
-    g_l = _gridify(left_all, av_width*1.1)
+        for result, values in self.grid.items():
+            limbus_json["data"][result] = {
+                "row" : y_labels[values["y_grid"]],
+                "column" : x_labels[values["x_grid"]]
+            }
 
-    g_l_d = {v : k for (k,v) in enumerate(set(g_l))}
+        return limbus_json
 
-    g_t = _gridify(top_all, av_width*1.1)
-    g_t_d = {v : k for (k,v) in enumerate(set(g_t))}
-    print(len(results))
-
-    for index, result in enumerate(results):
-        column = g_l_d[g_l[index]]
-        row = g_t_d[g_t[index]]
-
-
-        print("%s on row %i, column %i" % (result.data, row+1, column+1))
-
-    #print(g_l, g_t)
-
-
-determine_grid(results)
-
+    def to_pdf(self, fp):
+        pass
 
