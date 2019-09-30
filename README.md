@@ -44,8 +44,7 @@ If you would like to see what the data looks like before exporting, then simply 
 
 This should produce something like:
 
-
-<img src="examples/datamatrix_prep.jpeg" max-width="350px">
+<img src="examples/datamatrix_prep.jpg" max-width="350px">
 
 If you're happy with the results, export it in the format that LImBuS utilises for its barcode functionality.
 
