@@ -21,9 +21,9 @@ pip install limbus-qrtk
 ## Usage
 
 ```python
->>> from limbus-qrtk import DatamatrixReader
+>>> from limbus-qrtk import DataMatrixReader
 
->>> dmr = DatamatrixReader("./path/to/image.jpg")
+>>> dmr = DataMatrixReader("./path/to/image.jpg")
 
 >>> dmr.to_limbus_json()
 ```
