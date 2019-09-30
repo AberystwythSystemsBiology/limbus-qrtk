@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 
 
-image = Image.open("/home/keo7/Downloads/IMG_20181122_144935.jpg").convert('L')
+image = Image.open("datamatrix_example.jpeg").convert('L')
 
 
 results = decode(np.array(image))
@@ -25,7 +25,7 @@ def determine_grid(results: list) -> dict:
 
     g_t = _gridify(top_all, av_width*1.1)
     g_t_d = {v : k for (k,v) in enumerate(set(g_t))}
-
+    print(len(results))
 
     for index, result in enumerate(results):
         column = g_l_d[g_l[index]]
