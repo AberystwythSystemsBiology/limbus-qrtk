@@ -20,12 +20,42 @@ pip install limbus-qrtk
 
 ## Usage
 
+There's an example in the ```examples``` directory of the repository, but the following is pretty much all you need to get started.
+
+First of all, import the library using the following command:
+
 ```python
 >>> from limbus_qrtk import DataMatrixReader
+```
+
+Now, we want to load in an image of our DataMatrix array. It should look something like this:
+
+<img src="examples/datamatrix_example.jpeg">
+
+```
 
 >>> dmr = DataMatrixReader("./path/to/image.jpg")
 
 >>> dmr.to_limbus_json()
+{
+    "date": "2019-10-01 00:21:26.545732",
+    "number_rows": 3,
+    "number_columns": 3,
+    "number_items": 9,
+    "data": {
+        "G802330674": {
+            "row": 1,
+            "column": 0
+        },
+        "G802330675": {
+            "row": 1,
+            "column": 1
+        },
+        "G802330663": {
+            "row": 0,
+            "column": 1
+        } ...
+}
 ```
 
 ## Bug reporting and feature suggestions
