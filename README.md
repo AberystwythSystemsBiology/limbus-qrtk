@@ -30,12 +30,27 @@ First of all, import the library using the following command:
 
 Now, we want to load in an image of our DataMatrix array. It should look something like this:
 
-<img src="examples/datamatrix_example.jpeg">
+<img src="examples/datamatrix_example.jpeg" max-width="350px">
 
 ```
-
 >>> dmr = DataMatrixReader("./path/to/image.jpg")
+```
 
+If you would like to see what the data looks like before exporting, then simply run:
+
+```
+>>> dmr.to_img("./path/to/output.jpg")
+```
+
+This should produce something like:
+
+
+<img src="examples/datamatrix_prep.jpeg" max-width="350px">
+
+If you're happy with the results, export it in the format that LImBuS utilises for its barcode functionality.
+
+
+```
 >>> dmr.to_limbus_json()
 {
     "date": "2019-10-01 00:21:26.545732",
