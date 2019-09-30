@@ -32,13 +32,13 @@ Now, we want to load in an image of our DataMatrix array. It should look somethi
 
 <img src="examples/datamatrix_example.jpeg" max-width="350px">
 
-```
+```python
 >>> dmr = DataMatrixReader("./path/to/image.jpg")
 ```
 
 If you would like to see what the data looks like before exporting, then simply run:
 
-```
+```python
 >>> dmr.to_img("./path/to/output.jpg")
 ```
 
@@ -49,7 +49,7 @@ This should produce something like:
 If you're happy with the results, export it in the format that LImBuS utilises for its barcode functionality.
 
 
-```
+```python
 >>> dmr.to_limbus_json()
 {
     "date": "2019-10-01 00:21:26.545732",
