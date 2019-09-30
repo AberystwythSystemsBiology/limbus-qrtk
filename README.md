@@ -15,7 +15,7 @@ sudo dnf install libdmtx-devel
 Now once you have done this, install limbus-qrtk using pip:
 
 ```
-pip install limbus-qrtk
+pip install git+https://www.github.com/AberystwythSystemsBiology/limbus-qrtk
 ```
 
 ## Usage
